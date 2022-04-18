@@ -22,9 +22,9 @@ func TestUpload(t *testing.T) {
 	wd, _ := os.Getwd()
 	fmt.Println("work dir: ", wd)
 	// 断言对象
-	shoud := assert.New(t)
-	if shoud.NoError(err) {
-		shoud.NotEmpty(downloadUrl)
+	should := assert.New(t)
+	if should.NoError(err) {
+		should.NotEmpty(downloadUrl)
 	}
 
 }
