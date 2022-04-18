@@ -15,7 +15,10 @@ type Param struct {
 func main() {
 	r := gin.Default()
 	r.POST("/test", testHandler)
-	r.Run()
+	err := r.Run()
+	if err != nil {
+		return
+	}
 }
 func testHandler(c *gin.Context) {
 	var p Param
