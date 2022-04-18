@@ -4,24 +4,37 @@ import (
 	"cloud_station/store"
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	validator "github.com/go-playground/validator/v10"
 )
 
-func NewAliYunOssUpload(endpoint, ak, sk string) store.OSSUpload {
-	return &impl{
-		endpoint: endpoint,
-		ak:       ak,
-		sk:       sk,
+var (
+	validate = validator.New()
+)
+
+func NewAliYunOssUpload(endpoint, ak, sk string) (store.OSSUpload, error) {
+	uploader := &impl{
+		Endpoint: endpoint,
+		Ak:       ak,
+		Sk:       sk,
 	}
+	if err := uploader.Validate(); err != nil {
+		return nil, fmt.Errorf("vaildate params error: %s", err)
+	}
+	return uploader, nil
 }
 
 type impl struct {
-	endpoint string
-	ak       string
-	sk       string
+	Endpoint string `validate:"required"`
+	Ak       string `validate:"required"`
+	Sk       string `validate:"required"`
+}
+
+func (i *impl) Validate() error {
+	return validate.Struct(i)
 }
 
 func (i *impl) Upload(bucketName, objectKey, filename string) (downloadUrl string, err error) {
-	client, err := oss.New(i.endpoint, i.ak, i.sk)
+	client, err := oss.New(i.Endpoint, i.Ak, i.Sk)
 	if err != nil {
 		err = fmt.Errorf("new client error: %s", err)
 		return

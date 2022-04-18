@@ -17,14 +17,17 @@ var (
 
 func TestUpload(t *testing.T) {
 	fmt.Println(ep, ak, sk, bn)
-	upload := aliyun.NewAliYunOssUpload(ep, ak, sk)
-	downloadUrl, err := upload.Upload(bn, "main.go", "main.go")
-	wd, _ := os.Getwd()
-	fmt.Println("work dir: ", wd)
 	// 断言对象
 	should := assert.New(t)
+
+	upload, err := aliyun.NewAliYunOssUpload(ep, ak, sk)
 	if should.NoError(err) {
-		should.NotEmpty(downloadUrl)
+		downloadUrl, err := upload.Upload(bn, "main.go", "main.go")
+		wd, _ := os.Getwd()
+		fmt.Println("work dir: ", wd)
+		if should.NoError(err) {
+			should.NotEmpty(downloadUrl)
+		}
 	}
 
 }
