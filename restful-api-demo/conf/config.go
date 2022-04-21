@@ -21,9 +21,12 @@ func C() *Config {
 	return global
 }
 
+// SetGlobalConfig 全局配置对象的设置方式
 func SetGlobalConfig(conf *Config) {
 	global = conf
 }
+
+// NewDefaultConfig 初始化默认配置
 func NewDefaultConfig() *Config {
 	return &Config{
 		App:   NewDefaultApp(),
@@ -84,8 +87,10 @@ type mysql struct {
 	Database    string `toml:"database"`
 	MaxOpenConn int    `toml:"max_open_conn"`
 	MaxIdleConn int    `toml:"max_idle_conn"`
-	MaxLifeTime int    `toml:"max_life_time"`
-	MaxIdleTime int    `toml:"max_idle_time"`
+	// 单位是秒
+	MaxLifeTime int `toml:"max_life_time"`
+	// 单位是秒
+	MaxIdleTime int `toml:"max_idle_time"`
 	lock        sync.Mutex
 }
 
@@ -127,6 +132,7 @@ func (m *mysql) GetDB() (*sql.DB, error) {
 	}
 	return db, nil
 }
+
 func newDefaultLog() *log {
 	return &log{
 		Level:  zap.DebugLevel.String(),
