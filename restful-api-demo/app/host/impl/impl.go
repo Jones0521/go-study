@@ -3,6 +3,7 @@ package impl
 import (
 	"database/sql"
 
+	"github.com/go-jones/restful-api-demo/conf"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
 )
@@ -19,5 +20,10 @@ type impl struct {
 
 func (i *impl) Init() error {
 	i.log = zap.L().Named("Host")
+	db, err := conf.C().Mysql.GetDB()
+	if err != nil {
+		return err
+	}
+	i.db = db
 	return nil
 }
