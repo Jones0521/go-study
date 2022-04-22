@@ -20,6 +20,10 @@ type QueryHostRequest struct {
 	PageNumber int
 }
 
+func (req *QueryHostRequest) offset() int {
+	return (req.PageNumber - 1) * req.PageSize
+}
+
 type DescribeHostRequest struct {
 	Id string
 }
