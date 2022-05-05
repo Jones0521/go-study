@@ -21,8 +21,7 @@ func initDB() (err error) {
 	return nil
 }
 
-// 创建用户的函数
-
+// createUser 创建用户的函数
 func createUser(username, password, email string) error {
 	sqlstr := "insert into user(username,password,email) values(?,?,?)"
 	_, err := db.Exec(sqlstr, username, password, email)
@@ -31,4 +30,17 @@ func createUser(username, password, email string) error {
 		return err
 	}
 	return nil
+}
+
+// 查询数据库
+
+func queryUser(username, password string) error {
+	sqlStr := "select id from userinfo where username = ? and password=? limit"
+	var id int64
+	err := db.Get(&id, sqlStr, username, password)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }
