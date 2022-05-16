@@ -2,17 +2,18 @@ package main
 
 import (
 	"fmt"
+	"grpc-demo/rpc/service"
 	"log"
 	"net"
 	"net/rpc"
 )
 
-type Service interface {
-	Hello(name string, resp *string) error
-}
-
 // var
-var var2 Service = &HelloService{}
+// var var1 int = "string"
+// var _ Service = &HelloService{}
+// int(60)  ---> (int)(<type>)
+// 我们声明了一个空指针,强制把这个指针转换成了一个 *HelloService
+var _ service.Service = (*HelloService)(nil)
 
 type HelloService struct {
 }
@@ -32,7 +33,7 @@ func (h *HelloService) Hello(name string, resp *string) error {
 }
 func main() {
 	// 发送要提供的服务注册给RPC框架
-	err := rpc.RegisterName("HelloService", new(HelloService))
+	err := rpc.RegisterName(service.Name, new(HelloService))
 	if err != nil {
 		panic(err)
 	}
