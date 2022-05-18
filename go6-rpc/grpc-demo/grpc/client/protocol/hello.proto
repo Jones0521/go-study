@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package grpc.protocol;
+option go_package="client/protocol";
+
+
+// grpc 需要定义rpc
+service HelloService {
+  // Hello rpc 的名称
+  // Request rpc 参数
+  // Response rpc 响应
+  rpc Hello (Request) returns (Response);
+}
+
+message Request {
+  string value = 1;
+}
+
+message Response {
+  string value = 1;
+}
